@@ -11,6 +11,10 @@ public class DropDownMenu : MonoBehaviour
     public void SelectFunction(int function) {
         graph.SetFunction(function);
     }
+    
+    public void Quit() {
+        Application.Quit();
+    }
     void Update()
     {
         resolutionValueText.text = resolutionSlider.value.ToString();
