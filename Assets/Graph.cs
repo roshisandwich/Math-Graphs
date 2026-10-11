@@ -1,6 +1,4 @@
 using System;
-using NUnit.Framework.Constraints;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class Graph : MonoBehaviour
@@ -10,8 +8,8 @@ public class Graph : MonoBehaviour
 
     Transform[] points;
 
-    public enum functionName {
-        None, Quadratic, Cubic, Sine, Cosine, Tan
+    enum functionName {
+        None, Equal, Quadratic, Cubic, Sine, Cosine, Tan
     }
 
     functionName selectedFunction;
@@ -22,39 +20,40 @@ public class Graph : MonoBehaviour
 
     public void SetResolution(float set) {
         resolution = (int)set;
+        GetXCoords();
     }
 
     float GetYCoordinate(float x, float t = 0) {
         switch (selectedFunction)
         {
             case functionName.None:
+                return 0;
+            case functionName.Equal:
                 return x;
-                break;
             case functionName.Quadratic:
                 return x * x;
-                break;
             case functionName.Cubic:
                 return x * x * x;
-                break;
             case functionName.Sine:
                 return Mathf.Sin(Mathf.PI * (x + t));
-                break;
             case functionName.Cosine:
                 return Mathf.Cos(Mathf.PI * (x + t));
-                break;
             case functionName.Tan:
                 return Mathf.Tan(Mathf.PI * (x + t));
-                break;
             default:
                 return 0;
         }
     }
 
     public void GetXCoords() {
-        foreach (Transform point in points)
-        {
-            Destroy(point.gameObject);
+
+        if (points != null) {
+            foreach (Transform point in points)
+            {
+                Destroy(point.gameObject);
+            }
         }
+        
         float step = 2f / resolution;
         Vector3 position = Vector3.zero;
         var scale = Vector3.one / 5f * step;
@@ -69,8 +68,10 @@ public class Graph : MonoBehaviour
 		}
     }
 
-    void Update() {
+    void Awake() {
         GetXCoords();
+    }
+    void Update() {
         float time = Time.time;
         for (int i = 0; i < points.Length; i++) {
             Transform point = points[i];
