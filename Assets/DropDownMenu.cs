@@ -6,12 +6,16 @@ public class DropDownMenu : MonoBehaviour
 {
     public TMP_Text resolutionValueText;
     public Slider resolutionSlider;
-    public Graph graph;
 
     public void SelectFunction(int function) {
-        graph.SetFunction(function);
+        FunctionLibrary.SelectFunction(function);
     }
-    
+
+    void Awake()
+    {
+        resolutionSlider.value = 100f;
+    }
+
     public void Quit() {
         Application.Quit();
     }
